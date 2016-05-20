@@ -4,10 +4,13 @@ var xy;
 var ctx;
 var circ;
 var ab;
-var BallX = 50	 ;
-var BallY = 150;
+var BallX = 150;
+var BallY = 400;
 var ende = false;
 var radiusBall = 25;
+var direction = "ro";
+var score = true;
+var Leben = 3;
 
 window.onload = init
 
@@ -21,49 +24,69 @@ document.onkeydown = function(event) {
   	}
 }
 
-
 function init(){
 	xy = document.getElementById("leinwand");
 	ctx = xy.getContext("2d");
-	ctx.rect(x,LBalken,20,100);
+	ctx.rect(x,LBalken,20,120);
 	ctx.fill();
 	ctx.stroke();
 	drawBall();
 	ticker();
-	
 }
+
+
 function ticker(){
 	setInterval(function(){
 		
 	drawBar();
 	drawBall();
-	document.getElementById("BallX").innerHTML = BallX  ;
-	document.getElementById("BallY").innerHTML = BallY;
-	document.getElementById("BalkenX").innerHTML = x;
-	document.getElementById("BalkenY").innerHTML = LBalken;
-
-	document.getElementById("TrefferBallX").innerHTML = BallX  ;
-	document.getElementById("TrefferBallY").innerHTML = BallY;
-	document.getElementById("TrefferBalkenX").innerHTML = x;
-	document.getElementById("TrefferBalkenY").innerHTML = LBalken+150;
-
-	if ((BallY < (LBalken-radiusBall))||(((LBalken + LBalken + 100)<BallY))) {
-		document.getElementById("getroffen").innerHTML = "nicht getroffen";
-	}else{
-		document.getElementById("getroffen").innerHTML = "getroffen";
-	}
-	
-
-
-
-
-
+	document.getElementById("Leben").innerHTML = Leben;
 	},40);
 }
 
+
+function TestFallLinksUnten(){
+		circ.clearRect(21,0,xy.width-21,xy.height);
+		init();
+		BallY = 50;
+		BallX = 250;
+		direction = "lu";
+		ballAnimation();	
+}
+
+
+function TestFallLinksOben(){
+	circ.clearRect(21,0,xy.width-21,xy.height);
+	init();
+	BallY = 400;
+	BallX = 250;
+	direction = "lo";
+	ballAnimation();		
+}
+
+function TestFallUntenLinks(){
+	circ.clearRect(21,0,xy.width-21,xy.height);
+	init();
+	BallY = 50;
+	BallX = 50;
+	direction = "ru";
+	ballAnimation();		
+}
+
+function TestFallUntenRechts(){
+	circ.clearRect(21,0,xy.width-21,xy.height);
+	init();
+	BallY = 200;
+	BallX = 600;
+	direction = "lu";
+	ballAnimation();		
+}
+
+
 function drawBar(){
 	ctx.beginPath();
-	ctx.rect(x,LBalken,20,150);
+	ctx.rect(x,LBalken,20,120);
+
 	ctx.fill();
 	ctx.stroke();
 }
@@ -77,30 +100,68 @@ function drawBall(){
 	circ.stroke();
 }
 
+function checkAndMoveBall(){
+			if (direction == "ru") 
+			{
+				BallX = BallX + 10;
+				BallY = BallY + 10;
+			}else if (direction == "ro") 
+			{
+				BallX = BallX + 10;
+				BallY = BallY - 10;
+			}else if (direction == "lo") 
+			{
+				BallX = BallX - 10;
+				BallY = BallY - 10;
+			}else if (direction == "lu") {
+				BallX = BallX - 10;
+				BallY = BallY + 10;
+			}else if (direction == "roBalken") {
+				BallX = BallX + 10;
+				BallY = BallY - 10;				
+			}
+}
+
+function checkAndSetDirection(){
+			
+	//linke Seite
+	if ((direction == "lu")&&( BallX == 0)&&(BallY != 0) && (BallY != xy.height)) {
+		direction = "ru";
+	}			
+
+	if ((direction == "lo")&&( BallX == 0)&&(BallY != 0) && (BallY != xy.height)) {
+		direction = "ro";
+	}			
+}
+
+
+function checkIfHit(){
+	
+	if (BallX == 0) {
+		if ( (BallY > LBalken) && (BallY < (LBalken + 120))) {
+			score = true;	
+		}else{
+			score = false;	
+			daneben();		
+		}		
+	}
+
+}
+
+function daneben(){
+	Leben = Leben - 1;
+}
 
 function ballAnimation(){	
 		setInterval(function(){
-			circ.clearRect(21,0,xy.width-21,xy.height);	
-			
-			if (BallX < 500 && (!ende)) {
-				BallX = BallX + 10;
-				
-			}
-			if (BallX >= 500) {
-				ende = true;
-			}
-
-			if (BallX <= 500 && ende) {
-				BallX = BallX - 10;
-			}
-			if (BallX <= 50			) {
-				ende = false;
-			}
-			
+			circ.clearRect(21,0,xy.width-21,xy.height);
+			checkAndSetDirection();
+			checkIfHit();
+			checkAndMoveBall();			
 	 	}, 50);		
 }
 
-function moveIt(event,param){
+function moveIt(event,param){				//moves the Bar up and down
 	xy = document.getElementById("leinwand");
 	ctx = xy.getContext("2d");
 	ctx.clearRect(0,0,21,xy.height);
@@ -109,6 +170,5 @@ function moveIt(event,param){
 	}
 	if (param == 0 && LBalken < (xy.height -100)) {
 		LBalken = LBalken + 40;
-	}
-	
+	}	
 }

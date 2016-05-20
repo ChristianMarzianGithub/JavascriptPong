@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>JavascriptMemoryGame</title>
-		<script language="javascript" type="text/javascript" src="main.js"></script>
+		<script language="javascript" type="text/javascript" src="mainBounce.js"></script>
 		<link rel="stylesheet" type="text/css" href="look.css">
 	</head>
 	<body>	
@@ -10,19 +10,11 @@
 			Your browser does not support the HTML5 canvas tag.</canvas>
 		</div>		
 		<button onclick="ballAnimation()">start</button>
-		<br>BallX:<span id="BallX"></span>
-		<br>BallY:<span id="BallY"></span>
+		<br>Leben: <span id="Leben"></span>
+		<button onclick="TestFallLinksOben()">TestFallLinksOben</button>
+		<button onclick="TestFallLinksUnten()">TestFallLinksUnten</button>
 		<br>
-		<br>BalkenX:<span id="BalkenX"></span>
-		<br>BalkenY:<span id="BalkenY"></span>
-		<br>
-		<br>Trefferabfrage:
-		<br><span id="getroffen"></span>
-		<br>TrefferBallX:<span id="TrefferBallX"></span>
-		<br>TrefferBallY:<span id="TrefferBallY"></span>
-		<br>
-		<br>TrefferBalkenX:<span id="TrefferBalkenX"></span>
-		<br>TrefferBalkenY:<span id="TrefferBalkenY"></span>
-
+		<button onclick="TestFallUntenRechts()">TestFallUntenRechts</button>
+		<button onclick="TestFallUntenLinks()">TestFallUntenLinks</button>
 	</body>
 </html>
